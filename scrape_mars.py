@@ -62,6 +62,39 @@ def scrape_info():
 
     browser.quit()
 
+    UrlHemispheres = "https://astrogeology.usgs.gov"
+    UrlHemispheresImages = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars"
+
+    response = requests.get(UrlHemispheresImages)
+    HemispheresSoup = BeautifulSoup(response.text, "html.parser")
+
+    image_url = []
+    Hemispheresimages = HemispheresSoup.find_all("a", class_ = "itemLink product-item")
+
+    for link in Hemispheresimages:
+        image_url.append(link.get('href'))
+
+
+    hemisphere_image_urls = []
+
+    for i in range(len(Hemispheresimages)):
+        page2 = UrlHemispheres + image_url[i]
+        
+    
+        response2 = requests.get(page2)
+        HemispheresSoup2 = BeautifulSoup(response2.text, "html.parser")
+    
+        name = HemispheresSoup2.find("h2").text
+        name = name.rsplit(' ', 1)[0]
+        
+        image_url2 = HemispheresSoup2.find("img", class_ = "wide-image")
+        full_image_url = UrlHemispheres + image_url2["src"]
+        
+        TempoDict = {"name": name, "link": full_image_url}
+        HemispheresImageUrls.append(TempoDict)
+    
+    browser.quit()
+
     browser = init_browser()
 
         mars_data = {
@@ -72,7 +105,7 @@ def scrape_info():
         'MarsInfo': MarsIacts,
         }
 
-            # Return results
+    
     return mars_data
 
 if __name__ == '__main__':

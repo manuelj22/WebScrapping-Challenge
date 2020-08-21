@@ -63,3 +63,18 @@ def scrape_info():
     browser.quit()
 
     browser = init_browser()
+
+        mars_data = {
+        'NewsTitle': NewsTitle,
+        'NewsParagraph': NewsParagraph,
+        'ImageUrl': ImageUrl,
+        'MarsTWTR': MarsTWTR,
+        'MarsInfo': MarsIacts,
+        }
+
+            # Return results
+    return mars_data
+
+if __name__ == '__main__':
+    data = scrape_info()
+    print(data)
